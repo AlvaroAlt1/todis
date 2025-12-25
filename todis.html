@@ -16,11 +16,9 @@
             background: radial-gradient(circle at center, #1a0524 0%, #000000 100%);
             font-family: 'Montserrat', sans-serif;
             color: white; 
-            /* Altura dinámica para móviles */
             height: 100dvh; 
             width: 100vw;
             display: flex; flex-direction: column; align-items: center;
-            /* Evita zoom accidental al tocar rápido */
             touch-action: none;
         }
 
@@ -60,7 +58,7 @@
         }
 
         /* --- TÍTULO --- */
-        .header { position: absolute; top: 5vh; z-index: 10; text-align: center; width: 100%; pointer-events: none; }
+        .header { position: absolute; top: 8vh; z-index: 10; text-align: center; width: 100%; pointer-events: none; }
         .header h1 {
             font-size: 4.5rem; margin: 0; letter-spacing: 5px; color: #fff;
             text-transform: uppercase; font-weight: 900;
@@ -75,15 +73,15 @@
 
         /* --- BOTÓN LANZAR --- */
         #roll-btn {
-            position: absolute; bottom: 5vh; z-index: 10;
+            position: absolute; bottom: 6vh; z-index: 10;
             padding: 20px 80px; font-size: 1.5rem; font-weight: 900;
             text-transform: uppercase; color: #fff;
             background: linear-gradient(90deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.1) 100%);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.3);
             border-radius: 60px; cursor: pointer; backdrop-filter: blur(10px);
             transition: all 0.3s; box-shadow: 0 0 20px rgba(0,0,0,0.5);
             letter-spacing: 3px; text-shadow: 0 0 10px rgba(255,255,255,0.3);
-            -webkit-tap-highlight-color: transparent; /* Quita el flash azul en móviles */
+            -webkit-tap-highlight-color: transparent; 
         }
         #roll-btn:hover { background: #fff; color: #000; transform: scale(1.05); box-shadow: 0 0 50px rgba(188, 19, 254, 0.5); }
         #roll-btn:active { transform: scale(0.95); }
@@ -115,26 +113,29 @@
         .highlight { color: #00ffff; text-shadow: 0 0 10px #00ffff; }
         .danger { color: #ff0055; text-shadow: 0 0 10px #ff0055; }
 
-        /* --- MEDIA QUERIES PARA CELULARES --- */
+        /* --- MEDIA QUERIES PARA CELULARES (AQUÍ ESTÁ LA MEJORA) --- */
         @media (max-width: 768px) {
-            .header h1 { font-size: 3rem; }
-            .header { top: 30px; }
+            /* Título más grande en relación a pantalla */
+            .header { top: 5vh; }
+            .header h1 { font-size: 4.5rem; letter-spacing: 3px; } 
             
-            #result-number { font-size: 4rem; }
-            #result-title { font-size: 1.5rem; margin: 10px 0; }
-            #result-desc { font-size: 1rem; }
+            /* Tarjeta más ancha y textos grandes */
+            #result-card { width: 92%; padding: 25px; }
+            #result-number { font-size: 6rem; margin-bottom: 10px; } /* Número gigante */
+            #result-title { font-size: 2rem; line-height: 1.1; }
+            #result-desc { font-size: 1.3rem; }
             
+            /* Botón más fácil de tocar */
             #roll-btn {
-                padding: 20px 40px;
-                width: 80%; /* Botón más ancho en celular */
-                font-size: 1.2rem;
-                bottom: 40px;
+                padding: 22px 0;
+                width: 85%; /* Casi todo el ancho */
+                font-size: 1.4rem;
+                bottom: 5vh;
+                border-width: 2px;
             }
             
-            #result-card {
-                width: 90%; /* Tarjeta más ancha en celular */
-                padding: 20px;
-            }
+            /* Texto extra más legible */
+            .extra-text { font-size: 1.1rem; }
         }
     </style>
 </head>
@@ -183,7 +184,7 @@
     
     // Cámara inicial
     const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
-    adjustCamera(); // Ajuste inicial para móviles
+    adjustCamera(); // Ajuste inicial
 
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -292,7 +293,7 @@
     // --- FUNCIÓN RESPONSIVE DE CÁMARA ---
     function adjustCamera() {
         const aspect = window.innerWidth / window.innerHeight;
-        // Si es formato vertical (celular), alejamos la cámara (Z mayor)
+        // Si el aspecto es menor a 1 (celular vertical), alejamos la cámara (Z mayor)
         if (aspect < 1) {
             camera.position.set(0, 0, 24); // Zoom out en celular
         } else {

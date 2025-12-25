@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>TODIS - Dark Party</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -12,134 +13,82 @@
         body {
             margin: 0; overflow: hidden;
             background-color: #000;
+            background: radial-gradient(circle at center, #1a0524 0%, #000000 100%);
             font-family: 'Montserrat', sans-serif;
-            color: white; height: 100vh;
+            color: white; 
+            /* Altura dinámica para móviles */
+            height: 100dvh; 
+            width: 100vw;
             display: flex; flex-direction: column; align-items: center;
+            /* Evita zoom accidental al tocar rápido */
+            touch-action: none;
         }
 
         #game-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; }
 
-        /* --- FONDO DARK PARTY (NUEVO DISEÑO) --- */
+        /* --- FONDO DARK PARTY --- */
         .party-bg {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at center, #1a0524 0%, #000000 100%);
             z-index: 0; pointer-events: none; overflow: hidden;
         }
 
-        /* Luces giratorias (Reflectores) */
         .spotlight {
-            position: absolute;
-            top: 50%; left: 50%;
-            width: 200vmax; height: 200vmax;
+            position: absolute; top: 50%; left: 50%; width: 200vmax; height: 200vmax;
             transform: translate(-50%, -50%);
-            background: conic-gradient(from 0deg, 
-                transparent 0deg, 
-                rgba(138, 43, 226, 0.1) 20deg, 
-                transparent 40deg,
-                transparent 180deg,
-                rgba(0, 255, 255, 0.05) 200deg,
-                transparent 220deg
-            );
-            animation: rotate-lights 20s linear infinite;
-            pointer-events: none;
+            background: conic-gradient(from 0deg, transparent 0deg, rgba(138, 43, 226, 0.1) 20deg, transparent 40deg, transparent 180deg, rgba(0, 255, 255, 0.05) 200deg, transparent 220deg);
+            animation: rotate-lights 20s linear infinite; pointer-events: none;
         }
-
         .spotlight-2 {
-            animation: rotate-lights 30s linear infinite reverse;
-            opacity: 0.7;
-            background: conic-gradient(from 180deg, 
-                transparent 0deg, 
-                rgba(255, 0, 128, 0.08) 30deg, 
-                transparent 60deg
-            );
+            animation: rotate-lights 30s linear infinite reverse; opacity: 0.7;
+            background: conic-gradient(from 180deg, transparent 0deg, rgba(255, 0, 128, 0.08) 30deg, transparent 60deg);
         }
-
-        /* Blobs de color ambiental (Más oscuros y sutiles) */
         .ambient-blob {
-            position: absolute; border-radius: 50%;
-            filter: blur(100px); opacity: 0.3;
+            position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.3;
             animation: float-blob 15s infinite ease-in-out alternate;
         }
-        .b1 { top: -20%; left: -20%; width: 60vw; height: 60vw; background: #4b0082; } /* Indigo */
-        .b2 { bottom: -20%; right: -20%; width: 70vw; height: 70vw; background: #00008b; animation-delay: -5s; } /* Azul Oscuro */
+        .b1 { top: -20%; left: -20%; width: 60vw; height: 60vw; background: #4b0082; }
+        .b2 { bottom: -20%; right: -20%; width: 70vw; height: 70vw; background: #00008b; animation-delay: -5s; }
 
-        @keyframes rotate-lights {
-            0% { transform: translate(-50%, -50%) rotate(0deg); }
-            100% { transform: translate(-50%, -50%) rotate(360deg); }
-        }
-        @keyframes float-blob {
-            0% { transform: translate(0,0); opacity: 0.2; }
-            100% { transform: translate(50px, 50px); opacity: 0.4; }
-        }
+        @keyframes rotate-lights { 0% { transform: translate(-50%, -50%) rotate(0deg); } 100% { transform: translate(-50%, -50%) rotate(360deg); } }
+        @keyframes float-blob { 0% { transform: translate(0,0); opacity: 0.2; } 100% { transform: translate(50px, 50px); opacity: 0.4; } }
 
         /* --- UI DE VIDRIO --- */
         .glass-panel {
-            background: rgba(10, 10, 10, 0.6); /* Más oscuro */
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+            background: rgba(10, 10, 10, 0.6); backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.8);
         }
 
-        /* --- TÍTULO NEÓN REALISTA --- */
-        .header { position: absolute; top: 30px; z-index: 10; text-align: center; width: 100%; pointer-events: none; }
+        /* --- TÍTULO --- */
+        .header { position: absolute; top: 5vh; z-index: 10; text-align: center; width: 100%; pointer-events: none; }
         .header h1 {
-            font-size: 4.5rem; margin: 0; letter-spacing: 5px;
-            color: #fff;
-            text-transform: uppercase;
-            font-weight: 900;
-            /* Efecto Neón Base */
-            text-shadow: 
-                0 0 5px #fff,
-                0 0 10px #fff,
-                0 0 20px #bc13fe,
-                0 0 40px #bc13fe,
-                0 0 80px #bc13fe;
+            font-size: 4.5rem; margin: 0; letter-spacing: 5px; color: #fff;
+            text-transform: uppercase; font-weight: 900;
+            text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #bc13fe, 0 0 40px #bc13fe, 0 0 80px #bc13fe;
             animation: flicker 10s infinite alternate;
         }
-        .header p { 
-            font-size: 0.8rem; color: #fff; margin-top: 0px; letter-spacing: 6px; 
-            text-shadow: 0 0 10px #00ffff; opacity: 0.8; font-weight: 700;
-        }
-
-        /* Animación de parpadeo de neón (Flicker) */
+        
         @keyframes flicker {
-            0%, 18%, 22%, 25%, 53%, 57%, 100% {
-                text-shadow: 
-                    0 0 5px #fff,
-                    0 0 10px #fff,
-                    0 0 20px #bc13fe,
-                    0 0 40px #bc13fe,
-                    0 0 80px #bc13fe;
-                opacity: 1;
-            }
-            20%, 24%, 55% {
-                text-shadow: none;
-                opacity: 0.5; /* Se apaga un poco */
-            }
+            0%, 18%, 22%, 25%, 53%, 57%, 100% { opacity: 1; }
+            20%, 24%, 55% { opacity: 0.5; text-shadow: none; }
         }
 
-        /* BOTÓN LANZAR */
+        /* --- BOTÓN LANZAR --- */
         #roll-btn {
-            position: absolute; bottom: 50px; z-index: 10;
-            padding: 25px 80px; font-size: 1.5rem; font-weight: 900;
+            position: absolute; bottom: 5vh; z-index: 10;
+            padding: 20px 80px; font-size: 1.5rem; font-weight: 900;
             text-transform: uppercase; color: #fff;
             background: linear-gradient(90deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.1) 100%);
             border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 60px; cursor: pointer; backdrop-filter: blur(10px);
-            transition: all 0.3s; 
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
-            letter-spacing: 3px;
-            text-shadow: 0 0 10px rgba(255,255,255,0.3);
+            transition: all 0.3s; box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            letter-spacing: 3px; text-shadow: 0 0 10px rgba(255,255,255,0.3);
+            -webkit-tap-highlight-color: transparent; /* Quita el flash azul en móviles */
         }
-        #roll-btn:hover { 
-            background: #fff; color: #000; transform: scale(1.05); 
-            box-shadow: 0 0 50px rgba(188, 19, 254, 0.5); /* Resplandor morado al hover */
-            border-color: #fff;
-        }
+        #roll-btn:hover { background: #fff; color: #000; transform: scale(1.05); box-shadow: 0 0 50px rgba(188, 19, 254, 0.5); }
+        #roll-btn:active { transform: scale(0.95); }
 
-        /* RESULTADO */
+        /* --- RESULTADO --- */
         #result-card {
             position: absolute; top: 50%; left: 50%;
             transform: translate(-50%, -50%) scale(0.8);
@@ -150,18 +99,14 @@
         }
         #result-card.active { opacity: 1; transform: translate(-50%, -50%) scale(1); pointer-events: auto; }
 
-        #result-number { 
-            font-size: 5rem; font-weight: 900; margin: 0; line-height: 1; 
-            text-shadow: 0 0 30px currentColor; 
-        }
+        #result-number { font-size: 5rem; font-weight: 900; margin: 0; line-height: 1; text-shadow: 0 0 30px currentColor; }
         #result-title { font-size: 2rem; font-weight: 700; margin: 15px 0; text-transform: uppercase; letter-spacing: -1px; }
         #result-desc { font-size: 1.2rem; line-height: 1.5; color: #ccc; }
         
         .extra-box {
             margin-top: 25px; padding: 15px;
             background: rgba(0,0,0,0.6); border-radius: 10px;
-            border-left: 4px solid #ffd700;
-            display: none;
+            border-left: 4px solid #ffd700; display: none;
             box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
         }
         .extra-label { font-size: 0.7rem; color: #aaa; text-transform: uppercase; letter-spacing: 2px; }
@@ -169,6 +114,28 @@
 
         .highlight { color: #00ffff; text-shadow: 0 0 10px #00ffff; }
         .danger { color: #ff0055; text-shadow: 0 0 10px #ff0055; }
+
+        /* --- MEDIA QUERIES PARA CELULARES --- */
+        @media (max-width: 768px) {
+            .header h1 { font-size: 3rem; }
+            .header { top: 30px; }
+            
+            #result-number { font-size: 4rem; }
+            #result-title { font-size: 1.5rem; margin: 10px 0; }
+            #result-desc { font-size: 1rem; }
+            
+            #roll-btn {
+                padding: 20px 40px;
+                width: 80%; /* Botón más ancho en celular */
+                font-size: 1.2rem;
+                bottom: 40px;
+            }
+            
+            #result-card {
+                width: 90%; /* Tarjeta más ancha en celular */
+                padding: 20px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -202,53 +169,25 @@
 <script>
     // --- REGLAS ---
     const rules = {
-        1: { 
-            title: "🤔 TODOS O NADIE 🤔", 
-            desc: "Tú tienes el poder absoluto. <span class='highlight'>DECIDE:</span> ¿TOMAN TODOS O NO TOMA NADIE?", 
-            color: "#ff0055",
-            extra: null 
-        },
-        2: { 
-            title: "👿 OBLIGAS 👿", 
-            desc: "Elige a una víctima de la mesa para que tome.", 
-            color: "#ffaa00",
-            extra: "Decide el castigo: ¿Toma TODO o solo un SORBO?"
-        },
-        3: { 
-            title: "👉 DERECHA 👉", 
-            desc: "La persona a tu <span class='highlight'>DERECHA</span> debe tomar.", 
-            color: "#00aaff",
-            extra: "Jueguen 'Piedra, Papel o Tijera'. Si él/ella pierde: ¡TOMA TODO!"
-        },
-        4: { 
-            title: "👈 IZQUIERDA 👈", 
-            desc: "La persona a tu <span class='highlight'>IZQUIERDA</span> debe tomar.", 
-            color: "#aa00ff",
-            extra: "Jueguen 'Piedra, Papel o Tijera'. Si él/ella pierde: ¡TOMA TODO!"
-        },
-        5: { 
-            title: "😂 TOMAS SOL@ 😂", 
-            desc: "Mala suerte. <span class='danger'>Tomas tú sol@.</span> Sin quejas.", 
-            color: "#ffffff",
-            extra: null 
-        },
-        6: { 
-            title: "🫢 POR ALGUIEN 🫢", 
-            desc: "Di el nombre de alguien (presente o ausente). <span class='highlight'>Tomas por el/ella.</span>", 
-            color: "#00ff88",
-            extra: "Tú decides tu propio destino: ¿Tomas TODO o un SORBO?"
-        }
+        1: { title: "🤔 TODOS O NADIE 🤔", desc: "Tú tienes el poder absoluto. <span class='highlight'>DECIDE:</span> ¿TOMAN TODOS O NO TOMA NADIE?", color: "#ff0055", extra: null },
+        2: { title: "👿 OBLIGAS 👿", desc: "Elige a una víctima de la mesa para que tome.", color: "#ffaa00", extra: "Decide el castigo: ¿Toma TODO o solo un SORBO?" },
+        3: { title: "👉 DERECHA 👉", desc: "La persona a tu <span class='highlight'>DERECHA</span> debe tomar.", color: "#00aaff", extra: "Jueguen 'Piedra, Papel o Tijera'. Si él/ella pierde: ¡TOMA TODO!" },
+        4: { title: "👈 IZQUIERDA 👈", desc: "La persona a tu <span class='highlight'>IZQUIERDA</span> debe tomar.", color: "#aa00ff", extra: "Jueguen 'Piedra, Papel o Tijera'. Si él/ella pierde: ¡TOMA TODO!" },
+        5: { title: "😂 TOMAS SOL@ 😂", desc: "Mala suerte. <span class='danger'>Tomas tú sol@.</span> Sin quejas.", color: "#ffffff", extra: null },
+        6: { title: "🫢 POR ALGUIEN 🫢", desc: "Di el nombre de alguien (presente o ausente). <span class='highlight'>Tomas por el/ella.</span>", color: "#00ff88", extra: "Tú decides tu propio destino: ¿Tomas TODO o un SORBO?" }
     };
 
     // --- THREE.JS ---
     const container = document.getElementById('game-canvas');
     const scene = new THREE.Scene();
-    // Importante: No poner background al scene para que se vea el CSS de fondo
     
+    // Cámara inicial
     const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
-    camera.position.set(0, 0, 16); 
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true }); // Alpha true es vital
+    adjustCamera(); // Ajuste inicial para móviles
+
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Optimización rendimiento
     container.appendChild(renderer.domElement);
 
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.7); scene.add(ambientLight);
@@ -290,10 +229,7 @@
 
     function animate3D() {
         requestAnimationFrame(animate3D);
-        if(!isRolling) { 
-            dice.rotation.x += 0.003; 
-            dice.rotation.y += 0.005; 
-        }
+        if(!isRolling) { dice.rotation.x += 0.003; dice.rotation.y += 0.005; }
         renderer.render(scene, camera);
     }
     animate3D();
@@ -301,9 +237,7 @@
     btn.addEventListener('click', () => {
         if(isRolling) return;
         isRolling = true; btn.disabled = true;
-        
         card.classList.remove('active');
-
         const res = Math.floor(Math.random()*6)+1;
         const target = rMap[res];
         
@@ -320,82 +254,57 @@
 
     function showResult(n) {
         const d = rules[n];
-        
         const numElem = document.getElementById('result-number');
-        numElem.innerText = n;
-        numElem.style.color = d.color;
-        
+        numElem.innerText = n; numElem.style.color = d.color;
         const titleElem = document.getElementById('result-title');
-        titleElem.innerText = d.title;
-        titleElem.style.color = d.color;
-        
+        titleElem.innerText = d.title; titleElem.style.color = d.color;
         document.getElementById('result-desc').innerHTML = d.desc;
 
-        if (d.extra) {
-            extraBox.style.display = 'block';
-            extraText.innerText = d.extra;
-        } else {
-            extraBox.style.display = 'none';
-        }
+        if (d.extra) { extraBox.style.display = 'block'; extraText.innerText = d.extra; }
+        else { extraBox.style.display = 'none'; }
 
         card.classList.add('active');
 
-        if (n === 6) {
-            triggerConfettiExplosion(['#00ffff', '#ff00ff', '#ffd700']);
-        } else if (n === 5) {
-            triggerEmojiRain('🍺');
-        } else if (n === 2) {
-            triggerEmojiRain('🔥');
-        }
+        if (n === 6) triggerConfettiExplosion(['#00ffff', '#ff00ff', '#ffd700']);
+        else if (n === 5) triggerEmojiRain('🍺');
+        else if (n === 2) triggerEmojiRain('🔥');
     }
 
     function triggerConfettiExplosion(colors) {
-        confetti({
-            particleCount: 150,
-            spread: 70,
-            origin: { y: 0.6 },
-            colors: colors,
-            disableForcedPhysics: true
-        });
+        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: colors, disableForcedPhysics: true });
     }
 
-    // --- FUNCIÓN DE LLUVIA CORREGIDA ---
     function triggerEmojiRain(emojiIcon) {
-        const duration = 3000; 
-        const end = Date.now() + duration;
-        const scalar = 3; 
-
+        const duration = 3000; const end = Date.now() + duration; const scalar = 3; 
         const emojiShape = confetti.shapeFromText({ text: emojiIcon, scalar });
-
         (function frame() {
             if (Date.now() > end) return;
-
             if (Math.random() < 0.1) {
                 confetti({
-                    particleCount: 1, 
-                    startVelocity: 0,
-                    ticks: 200, 
-                    origin: {
-                        x: Math.random(), 
-                        y: -0.1 
-                    },
-                    shapes: [emojiShape],
-                    scalar: scalar,
-                    gravity: 0.8, 
-                    drift: 0, 
-                    flat: true,
-                    colors: ['#FFF'] 
+                    particleCount: 1, startVelocity: 0, ticks: 200, origin: { x: Math.random(), y: -0.1 },
+                    shapes: [emojiShape], scalar: scalar, gravity: 0.8, drift: 0, flat: true, colors: ['#FFF'] 
                 });
             }
-
             requestAnimationFrame(frame);
         }());
+    }
+
+    // --- FUNCIÓN RESPONSIVE DE CÁMARA ---
+    function adjustCamera() {
+        const aspect = window.innerWidth / window.innerHeight;
+        // Si es formato vertical (celular), alejamos la cámara (Z mayor)
+        if (aspect < 1) {
+            camera.position.set(0, 0, 24); // Zoom out en celular
+        } else {
+            camera.position.set(0, 0, 16); // Normal en PC
+        }
     }
 
     window.addEventListener('resize', () => {
         camera.aspect = window.innerWidth/window.innerHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
+        adjustCamera(); // Recalcular al rotar pantalla
     });
 
 </script>
